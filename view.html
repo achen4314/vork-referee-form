@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>裁判报名数据查看</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f5f6fa;padding:16px}
+h1{font-size:20px;margin-bottom:4px;color:#1a1a2e}
+.sub{color:#999;font-size:12px;margin-bottom:16px}
+.cards{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.cards>div{background:#fff;border-radius:10px;padding:14px 18px;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:100px}
+.cards .n{font-size:26px;font-weight:700;color:#e94560}
+.cards .l{font-size:11px;color:#999;margin-top:2px}
+.bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.bar button{padding:7px 14px;border-radius:6px;font-size:13px;cursor:pointer;border:none;font-weight:600}
+.btn1{background:#e94560;color:#fff}
+.btn2{background:#fff;color:#e94560;border:1.5px solid #e94560}
+.wrap{background:#fff;border-radius:10px;overflow:auto;max-height:500px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid #f0f0f0;white-space:nowrap}
+th{background:#1a1a2e;color:#fff;position:sticky;top:0}
+tr:hover td{background:#fafafa}
+#loading{text-align:center;padding:40px;color:#999}
+#error{text-align:center;padding:40px;color:#d32f2f}
+</style>
+</head>
+<body>
+<h1>📋 裁判报名数据</h1>
+<p class="sub">数据来源：云端数据库 · <span id="time"></span></p>
+
+<div class="cards">
+  <div><div class="n" id="total">-</div><div class="l">报名总数</div></div>
+  <div><div class="n" id="schools">-</div><div class="l">参与学校</div></div>
+  <div><div class="n" id="hotel">-</div><div class="l">需住宿</div></div>
+</div>
+
+<div class="bar">
+  <button class="btn1" onclick="loadData()">🔄 刷新</button>
+  <button class="btn2" onclick="exportCSV()">📥 导出CSV</button>
+  <button class="btn2" onclick="window.open('/')">📱 打开报名表</button>
+</div>
+
+<div id="loading">加载中...</div>
+<div id="error" style="display:none"></div>
+<div id="tableWrap" class="wrap" style="display:none"></div>
+
+<script>
+var DB = "https://jsonblob.com/api/jsonBlob/019e3b6f-ebe7-7961-b93e-2f89db66cd8b";
+var ALL_DATA = [];
+
+function loadData(){
+  document.getElementById('loading').style.display='block';
+  document.getElementById('error').style.display='none';
+  document.getElementById('tableWrap').style.display='none';
+
+  fetch(DB, {headers:{'Accept':'application/json'}})
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      ALL_DATA = Array.isArray(data) ? data : [];
+      document.getElementById('loading').style.display='none';
+      document.getElementById('time').textContent = new Date().toLocaleString('zh-CN');
+
+      if (!ALL_DATA.length){
+        document.getElementById('loading').textContent = '暂无报名数据';
+        document.getElementById('loading').style.display='block';
+        return;
+      }
+
+      document.getElementById('total').textContent = ALL_DATA.length;
+      var schools = new Set();
+      var hotelCount = 0;
+      ALL_DATA.forEach(function(r){
+        if (r.school) schools.add(r.school);
+        if (r.hotel === '需要') hotelCount++;
+      });
+      document.getElementById('schools').textContent = schools.size;
+      document.getElementById('hotel').textContent = hotelCount;
+
+      var H = ['submitTime','name','gender','idCard','phone','wechat',
+               'school','department','role','hasExp','expDetail','cert',
+               'pos1','pos2','size','hotel','diet',
+               'eName','ePhone','eRel','remark'];
+      var HL = ['提交时间','姓名','性别','身份证号','手机号','微信号',
+                '学校','学院/部门','身份','裁判经验','裁判经历','证书',
+                '第一志愿','第二志愿','尺码','住宿','饮食',
+                '紧急联系人','紧急电话','关系','备注'];
+
+      var html = '<table><thead><tr><th>#</th>';
+      for (var i=0;i<HL.length;i++) html += '<th>'+HL[i]+'</th>';
+      html += '</tr></thead><tbody>';
+
+      for (var i=0;i<ALL_DATA.length;i++){
+        html += '<tr><td>'+(i+1)+'</td>';
+        for (var j=0;j<H.length;j++){
+          html += '<td>'+(ALL_DATA[i][H[j]]||'')+'</td>';
+        }
+        html += '</tr>';
+      }
+      html += '</tbody></table>';
+      document.getElementById('tableWrap').innerHTML = html;
+      document.getElementById('tableWrap').style.display='block';
+    })
+    .catch(function(e){
+      document.getElementById('loading').style.display='none';
+      document.getElementById('error').style.display='block';
+      document.getElementById('error').textContent='加载失败：'+e.message;
+    });
+}
+
+function exportCSV(){
+  if (!ALL_DATA.length) return alert('无数据');
+  var H = ['submitTime','name','gender','idCard','phone','wechat',
+           'school','department','role','hasExp','expDetail','cert',
+           'pos1','pos2','size','hotel','diet',
+           'eName','ePhone','eRel','remark'];
+  var HL = ['提交时间','姓名','性别','身份证号','手机号','微信号',
+            '学校','学院/部门','身份','裁判经验','裁判经历','证书',
+            '第一志愿','第二志愿','尺码','住宿','饮食',
+            '紧急联系人','紧急电话','关系','备注'];
+  var csv = '\uFEFF'+HL.join(',')+'\n';
+  ALL_DATA.forEach(function(r){
+    csv += H.map(function(k){ return '"'+(r[k]||'').replace(/"/g,'""')+'"'; }).join(',') + '\n';
+  });
+  var blob = new Blob([csv],{type:'text/csv;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = '裁判报名汇总_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+}
+
+loadData();
+</script>
+</body>
+</html>
