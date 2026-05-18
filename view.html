@@ -79,12 +79,12 @@ function loadData(){
       document.getElementById('hotel').textContent = hotelCount;
 
       var H = ['submitTime','name','gender','idCard','phone','wechat',
-               'school','department','role','hasExp','expDetail','cert',
-               'pos1','pos2','size','hotel','diet',
+               'school','department','role','hasExp','expDetail',
+               'pos1','pos2','size','diet',
                'eName','ePhone','eRel','remark'];
       var HL = ['提交时间','姓名','性别','身份证号','手机号','微信号',
-                '学校','学院/部门','身份','裁判经验','裁判经历','证书',
-                '第一志愿','第二志愿','尺码','住宿','饮食',
+                '学校','学院/部门','身份','裁判经验','裁判经历',
+                '第一志愿','第二志愿','尺码','饮食',
                 '紧急联系人','紧急电话','关系','备注'];
 
       var html = '<table><thead><tr><th>#</th>';
@@ -112,12 +112,12 @@ function loadData(){
 function exportCSV(){
   if (!ALL_DATA.length) return alert('无数据');
   var H = ['submitTime','name','gender','idCard','phone','wechat',
-           'school','department','role','hasExp','expDetail','cert',
-           'pos1','pos2','size','hotel','diet',
+           'school','department','role','hasExp','expDetail',
+           'pos1','pos2','size','diet',
            'eName','ePhone','eRel','remark'];
   var HL = ['提交时间','姓名','性别','身份证号','手机号','微信号',
-            '学校','学院/部门','身份','裁判经验','裁判经历','证书',
-            '第一志愿','第二志愿','尺码','住宿','饮食',
+            '学校','学院/部门','身份','裁判经验','裁判经历',
+            '第一志愿','第二志愿','尺码','饮食',
             '紧急联系人','紧急电话','关系','备注'];
   var csv = '\uFEFF'+HL.join(',')+'\n';
   ALL_DATA.forEach(function(r){

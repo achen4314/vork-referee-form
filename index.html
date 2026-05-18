@@ -72,12 +72,7 @@
 <input type="radio" name="hasExp" id="e_y" value="是" required><label for="e_y">是</label>
 <input type="radio" name="hasExp" id="e_n" value="否"><label for="e_n">否</label></div></div>
 <div class="field" id="expBox" style="display:none"><label>裁判经历简述</label><textarea id="expDetail" placeholder="请简述：赛事名称、岗位、次数等" rows="2"></textarea></div>
-<div class="field"><label>裁判员证书等级</label><div class="radios">
-<input type="radio" name="cert" id="c0" value="无" checked><label for="c0">无</label>
-<input type="radio" name="cert" id="c1" value="国家级"><label for="c1">国家级</label>
-<input type="radio" name="cert" id="c2" value="一级"><label for="c2">一级</label>
-<input type="radio" name="cert" id="c3" value="二级"><label for="c3">二级</label>
-<input type="radio" name="cert" id="c4" value="三级"><label for="c4">三级</label></div></div></div>
+</div>
 
 <div class="card"><div class="card-title">岗位意向</div>
 <div class="field"><label>第一志愿 <span class="req">*</span></label>
@@ -101,9 +96,6 @@
 <input type="radio" name="size" id="s_xl" value="XL"><label for="s_xl">XL</label>
 <input type="radio" name="size" id="s_2xl" value="2XL"><label for="s_2xl">2XL</label>
 <input type="radio" name="size" id="s_3xl" value="3XL"><label for="s_3xl">3XL</label></div></div>
-<div class="field"><label>是否需要住宿 <span class="req">*</span></label><div class="radios">
-<input type="radio" name="hotel" id="h_y" value="需要" required><label for="h_y">需要</label>
-<input type="radio" name="hotel" id="h_n" value="不需要"><label for="h_n">不需要</label></div></div>
 <div class="field"><label>饮食禁忌</label><div class="checks">
 <label class="cb"><input type="checkbox" name="diet" value="无" checked onchange="dietToggle(this)"><span>无特殊要求</span></label>
 <label class="cb"><input type="checkbox" name="diet" value="清真" onchange="dietToggle(this)"><span>清真</span></label>
@@ -163,7 +155,6 @@ function submit() {
   if (!document.querySelector('input[name="hasExp"]:checked')) { showErr('请选择是否有裁判经验'); return; }
   if (!$('pos1').value) { showErr('请选择第一志愿岗位'); return; }
   if (!document.querySelector('input[name="size"]:checked')) { showErr('请选择衣服尺码'); return; }
-  if (!document.querySelector('input[name="hotel"]:checked')) { showErr('请选择是否需要住宿'); return; }
   if (!$('eRel').value) { showErr('请选择紧急联系人关系'); return; }
 
   var phone = $('phone').value.trim();
@@ -185,10 +176,10 @@ function submit() {
     role: document.querySelector('input[name="role"]:checked').value,
     hasExp: document.querySelector('input[name="hasExp"]:checked').value,
     expDetail: $('expDetail').value.trim(),
-    cert: document.querySelector('input[name="cert"]:checked').value,
+
     pos1: $('pos1').value, pos2: $('pos2').value,
     size: document.querySelector('input[name="size"]:checked').value,
-    hotel: document.querySelector('input[name="hotel"]:checked').value,
+
     diet: diets.join('、') || '无',
     eName: $('eName').value.trim(), ePhone: ep, eRel: $('eRel').value,
     remark: $('remark').value.trim(),
@@ -223,8 +214,8 @@ function submit() {
 }
 
 function downloadCSV(row) {
-  var h = '提交时间,姓名,性别,身份证号,手机号,微信号,学校,学院/部门,身份,裁判经验,裁判经历,裁判证书等级,第一志愿,第二志愿,衣服尺码,住宿,饮食禁忌,紧急联系人,紧急联系人电话,关系,备注';
-  var v = [row.submitTime,row.name,row.gender,row.idCard,row.phone,row.wechat,row.school,row.department,row.role,row.hasExp,row.expDetail,row.cert,row.pos1,row.pos2,row.size,row.hotel,row.diet,row.eName,row.ePhone,row.eRel,row.remark];
+  var h = '提交时间,姓名,性别,身份证号,手机号,微信号,学校,学院/部门,身份,裁判经验,裁判经历,第一志愿,第二志愿,衣服尺码,饮食禁忌,紧急联系人,紧急联系人电话,关系,备注';
+  var v = [row.submitTime,row.name,row.gender,row.idCard,row.phone,row.wechat,row.school,row.department,row.role,row.hasExp,row.expDetail,row.pos1,row.pos2,row.size,row.diet,row.eName,row.ePhone,row.eRel,row.remark];
   var csv = '\uFEFF' + h + '\n' + v.map(function(x){ return '"' + (x||'').replace(/"/g,'""') + '"'; }).join(',');
   var blob = new Blob([csv], {type: 'text/csv;charset=utf-8'});
   var url = URL.createObjectURL(blob);
