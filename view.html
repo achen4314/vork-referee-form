@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>裁判报名数据查看</title>
+<title>裁判报名数据</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f5f6fa;padding:16px}
@@ -22,112 +22,107 @@ table{width:100%;border-collapse:collapse;font-size:12px}
 th,td{padding:8px 10px;text-align:left;border-bottom:1px solid #f0f0f0;white-space:nowrap}
 th{background:#1a1a2e;color:#fff;position:sticky;top:0}
 tr:hover td{background:#fafafa}
-#loading{text-align:center;padding:40px;color:#999}
-#error{text-align:center;padding:40px;color:#d32f2f}
+#status{text-align:center;padding:40px;color:#999}
+#error{display:none;text-align:center;padding:40px;color:#d32f2f}
 </style>
 </head>
 <body>
 <h1>📋 裁判报名数据</h1>
-<p class="sub">数据来源：云端数据库 · <span id="time"></span></p>
+<p class="sub">数据来源：云端 · <span id="time"></span> · <span id="count"></span></p>
 
 <div class="cards">
   <div><div class="n" id="total">-</div><div class="l">报名总数</div></div>
   <div><div class="n" id="schools">-</div><div class="l">参与学校</div></div>
-  <div><div class="n" id="hotel">-</div><div class="l">需住宿</div></div>
 </div>
 
 <div class="bar">
-  <button class="btn1" onclick="loadData()">🔄 刷新</button>
+  <button class="btn1" onclick="loadData()">🔄 刷新数据</button>
   <button class="btn2" onclick="exportCSV()">📥 导出CSV</button>
   <button class="btn2" onclick="window.open('/')">📱 打开报名表</button>
 </div>
 
-<div id="loading">加载中...</div>
-<div id="error" style="display:none"></div>
+<div id="status">加载中...</div>
+<div id="error"></div>
 <div id="tableWrap" class="wrap" style="display:none"></div>
 
 <script>
-var DB = "https://jsonblob.com/api/jsonBlob/019e3b6f-ebe7-7961-b93e-2f89db66cd8b";
+var API = 'https://api.github.com/repos/achen4314/vork-referee-form/contents/data.json';
 var ALL_DATA = [];
 
-function loadData(){
-  document.getElementById('loading').style.display='block';
-  document.getElementById('error').style.display='none';
-  document.getElementById('tableWrap').style.display='none';
-
-  fetch(DB, {headers:{'Accept':'application/json'}})
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      ALL_DATA = Array.isArray(data) ? data : [];
-      document.getElementById('loading').style.display='none';
-      document.getElementById('time').textContent = new Date().toLocaleString('zh-CN');
-
-      if (!ALL_DATA.length){
-        document.getElementById('loading').textContent = '暂无报名数据';
-        document.getElementById('loading').style.display='block';
-        return;
-      }
-
-      document.getElementById('total').textContent = ALL_DATA.length;
-      var schools = new Set();
-      var hotelCount = 0;
-      ALL_DATA.forEach(function(r){
-        if (r.school) schools.add(r.school);
-        if (r.hotel === '需要') hotelCount++;
-      });
-      document.getElementById('schools').textContent = schools.size;
-      document.getElementById('hotel').textContent = hotelCount;
-
-      var H = ['submitTime','name','gender','idCard','phone','wechat',
-               'school','department','role','hasExp','expDetail',
-               'pos1','pos2','size','diet',
-               'eName','ePhone','eRel','remark'];
-      var HL = ['提交时间','姓名','性别','身份证号','手机号','微信号',
-                '学校','学院/部门','身份','裁判经验','裁判经历',
-                '第一志愿','第二志愿','尺码','饮食',
-                '紧急联系人','紧急电话','关系','备注'];
-
-      var html = '<table><thead><tr><th>#</th>';
-      for (var i=0;i<HL.length;i++) html += '<th>'+HL[i]+'</th>';
-      html += '</tr></thead><tbody>';
-
-      for (var i=0;i<ALL_DATA.length;i++){
-        html += '<tr><td>'+(i+1)+'</td>';
-        for (var j=0;j<H.length;j++){
-          html += '<td>'+(ALL_DATA[i][H[j]]||'')+'</td>';
-        }
-        html += '</tr>';
-      }
-      html += '</tbody></table>';
-      document.getElementById('tableWrap').innerHTML = html;
-      document.getElementById('tableWrap').style.display='block';
-    })
-    .catch(function(e){
-      document.getElementById('loading').style.display='none';
-      document.getElementById('error').style.display='block';
-      document.getElementById('error').textContent='加载失败：'+e.message;
-    });
+// UTF-8 safe base64 decode
+function b64d(s) {
+  return decodeURIComponent(atob(s).split('').map(function(c){return '%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)}).join(''));
 }
 
-function exportCSV(){
+var FIELDS = [
+  {k:'t',l:'提交时间'},{k:'n',l:'姓名'},{k:'g',l:'性别'},
+  {k:'id',l:'身份证号'},{k:'ph',l:'手机号'},{k:'wx',l:'微信号'},
+  {k:'sc',l:'学校'},{k:'dp',l:'学院/部门'},{k:'rl',l:'身份'},
+  {k:'ex',l:'裁判经验'},{k:'ed',l:'裁判经历'},
+  {k:'p1',l:'第一志愿'},{k:'p2',l:'第二志愿'},{k:'sz',l:'尺码'},
+  {k:'dt',l:'饮食'},{k:'en',l:'紧急联系人'},{k:'ep',l:'紧急电话'},
+  {k:'er',l:'关系'},{k:'rm',l:'备注'}
+];
+
+function loadData() {
+  document.getElementById('status').style.display = 'block';
+  document.getElementById('status').textContent = '加载中...';
+  document.getElementById('error').style.display = 'none';
+  document.getElementById('tableWrap').style.display = 'none';
+
+  fetch(API, {headers:{'Accept':'application/vnd.github+json'}})
+  .then(function(r){
+    if (!r.ok) throw new Error('HTTP '+r.status);
+    return r.json();
+  })
+  .then(function(d){
+    ALL_DATA = JSON.parse(b64d(d.content));
+    if (!Array.isArray(ALL_DATA)) ALL_DATA = [];
+    document.getElementById('status').style.display = 'none';
+    document.getElementById('time').textContent = new Date().toLocaleString('zh-CN');
+    document.getElementById('count').textContent = '共 '+ALL_DATA.length+' 条';
+
+    if (!ALL_DATA.length) {
+      document.getElementById('status').textContent = '暂无报名数据';
+      document.getElementById('status').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('total').textContent = ALL_DATA.length;
+    var schools = new Set();
+    ALL_DATA.forEach(function(r){ if (r.sc) schools.add(r.sc); });
+    document.getElementById('schools').textContent = schools.size;
+
+    var html = '<table><thead><tr><th>#</th>';
+    FIELDS.forEach(function(f){ html += '<th>'+f.l+'</th>'; });
+    html += '</tr></thead><tbody>';
+
+    for (var i=0;i<ALL_DATA.length;i++) {
+      html += '<tr><td>'+(i+1)+'</td>';
+      FIELDS.forEach(function(f){ html += '<td>'+(ALL_DATA[i][f.k]||'')+'</td>'; });
+      html += '</tr>';
+    }
+    html += '</tbody></table>';
+    document.getElementById('tableWrap').innerHTML = html;
+    document.getElementById('tableWrap').style.display = 'block';
+  })
+  .catch(function(e){
+    document.getElementById('status').style.display = 'none';
+    document.getElementById('error').style.display = 'block';
+    document.getElementById('error').textContent = '加载失败：'+e.message;
+  });
+}
+
+function exportCSV() {
   if (!ALL_DATA.length) return alert('无数据');
-  var H = ['submitTime','name','gender','idCard','phone','wechat',
-           'school','department','role','hasExp','expDetail',
-           'pos1','pos2','size','diet',
-           'eName','ePhone','eRel','remark'];
-  var HL = ['提交时间','姓名','性别','身份证号','手机号','微信号',
-            '学校','学院/部门','身份','裁判经验','裁判经历',
-            '第一志愿','第二志愿','尺码','饮食',
-            '紧急联系人','紧急电话','关系','备注'];
-  var csv = '\uFEFF'+HL.join(',')+'\n';
+  var h = FIELDS.map(function(f){return f.l}).join(',');
+  var csv = '\uFEFF'+h+'\n';
   ALL_DATA.forEach(function(r){
-    csv += H.map(function(k){ return '"'+(r[k]||'').replace(/"/g,'""')+'"'; }).join(',') + '\n';
+    csv += FIELDS.map(function(f){return '"'+(r[f.k]||'').replace(/"/g,'""')+'"'}).join(',')+'\n';
   });
   var blob = new Blob([csv],{type:'text/csv;charset=utf-8'});
   var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url; a.download = '裁判报名汇总_'+new Date().toISOString().slice(0,10)+'.csv';
-  a.click();
+  var a = document.createElement('a'); a.href = url; a.download = '裁判报名汇总_'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
 }
 
 loadData();
