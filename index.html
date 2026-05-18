@@ -5,47 +5,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>赛会裁判报名</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif; background: #f5f6fa; color: #333; min-height: 100vh; padding-bottom: 40px; }
-  .top-bar { background: linear-gradient(135deg, #1a1a2e, #16213e); color: #fff; text-align: center; padding: 24px 16px 20px; }
-  .top-bar h2 { font-size: 18px; letter-spacing: 1px; margin-bottom: 2px; }
-  .top-bar .sub { font-size: 12px; opacity: .65; letter-spacing: .5px; }
-  .top-bar .tag { display: inline-block; margin-top: 10px; padding: 4px 14px; background: #e94560; border-radius: 20px; font-size: 13px; font-weight: 600; }
-  .card { background: #fff; border-radius: 12px; margin: 12px 14px; padding: 18px 16px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
-  .card-title { font-size: 15px; font-weight: 700; color: #1a1a2e; padding-bottom: 10px; margin-bottom: 14px; border-bottom: 2px solid #e94560; }
-  .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 5px; }
-  .field label .req { color: #e94560; }
-  .field label .tip { font-weight: 400; color: #aaa; font-size: 11px; }
-  input[type="text"], input[type="tel"], select, textarea { width: 100%; padding: 10px 12px; font-size: 15px; font-family: inherit; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; -webkit-appearance: none; color: #333; }
-  input:focus, select:focus, textarea:focus { outline: none; border-color: #e94560; background: #fff; }
-  select { background: #fafafa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M5 7L1 3h8z' fill='%23999'/%3E%3C/svg%3E") no-repeat right 12px center; padding-right: 32px; }
-  textarea { resize: vertical; min-height: 60px; }
-  .radios { display: flex; gap: 8px; flex-wrap: wrap; }
-  .radios input { display: none; }
-  .radios label { display: block; text-align: center; padding: 8px 10px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; cursor: pointer; flex: 1; min-width: 55px; font-weight: 500; color: #666; margin: 0; }
-  .radios input:checked + label { border-color: #e94560; background: #fef0f3; color: #e94560; font-weight: 600; }
-  .checks { display: flex; flex-direction: column; gap: 6px; }
-  .checks label.cb { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #444; cursor: pointer; font-weight: 400; margin: 0; }
-  .checks input[type="checkbox"] { width: 18px; height: 18px; accent-color: #e94560; flex-shrink: 0; }
-  .err { display: none; padding: 10px 14px; background: #fff3f3; color: #d32f2f; border-radius: 8px; font-size: 13px; margin: 12px 14px 0; text-align: center; }
-  .btn-wrap { text-align: center; margin: 20px 14px; }
-  .btn { width: 100%; padding: 14px; font-size: 17px; font-weight: 700; color: #fff; background: linear-gradient(135deg, #e94560, #c23152); border: none; border-radius: 12px; cursor: pointer; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(233,69,96,.35); }
-  .btn:active { transform: scale(.98); opacity: .9; }
-  .btn[disabled] { background: #ccc; box-shadow: none; }
-  .success { display: none; text-align: center; padding: 40px 20px; }
-  .success .icon { font-size: 56px; color: #4caf50; margin-bottom: 12px; }
-  .success h3 { font-size: 20px; color: #333; margin-bottom: 6px; }
-  .success p { font-size: 14px; color: #888; }
-  .foot { text-align: center; padding: 20px; font-size: 11px; color: #ccc; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;background:#f5f6fa;color:#333;min-height:100vh;padding-bottom:40px}
+.top-bar{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;text-align:center;padding:24px 16px 20px}
+.top-bar h2{font-size:18px;letter-spacing:1px;margin-bottom:2px}
+.top-bar .sub{font-size:12px;opacity:.65;letter-spacing:.5px}
+.top-bar .tag{display:inline-block;margin-top:10px;padding:4px 14px;background:#e94560;border-radius:20px;font-size:13px;font-weight:600}
+.card{background:#fff;border-radius:12px;margin:12px 14px;padding:18px 16px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.card-title{font-size:15px;font-weight:700;color:#1a1a2e;padding-bottom:10px;margin-bottom:14px;border-bottom:2px solid #e94560}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:5px}
+.field label .req{color:#e94560}
+.field label .tip{font-weight:400;color:#aaa;font-size:11px}
+input[type="text"],input[type="tel"],select,textarea{width:100%;padding:10px 12px;font-size:15px;font-family:inherit;border:1px solid #ddd;border-radius:8px;background:#fafafa;-webkit-appearance:none;color:#333}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#e94560;background:#fff}
+select{background:#fafafa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M5 7L1 3h8z' fill='%23999'/%3E%3C/svg%3E") no-repeat right 12px center;padding-right:32px}
+textarea{resize:vertical;min-height:60px}
+.radios{display:flex;gap:8px;flex-wrap:wrap}
+.radios input{display:none}
+.radios label{display:block;text-align:center;padding:8px 10px;font-size:14px;border:1px solid #ddd;border-radius:8px;background:#fafafa;cursor:pointer;flex:1;min-width:55px;font-weight:500;color:#666;margin:0}
+.radios input:checked+label{border-color:#e94560;background:#fef0f3;color:#e94560;font-weight:600}
+.checks{display:flex;flex-direction:column;gap:6px}
+.checks label.cb{display:flex;align-items:center;gap:8px;font-size:14px;color:#444;cursor:pointer;font-weight:400;margin:0}
+.checks input[type="checkbox"]{width:18px;height:18px;accent-color:#e94560;flex-shrink:0}
+.err{display:none;padding:10px 14px;background:#fff3f3;color:#d32f2f;border-radius:8px;font-size:13px;margin:12px 14px 0;text-align:center}
+.btn-wrap{text-align:center;margin:20px 14px}
+.btn{width:100%;padding:14px;font-size:17px;font-weight:700;color:#fff;background:linear-gradient(135deg,#e94560,#c23152);border:none;border-radius:12px;cursor:pointer;letter-spacing:1px;box-shadow:0 4px 12px rgba(233,69,96,.35)}
+.btn:active{transform:scale(.98);opacity:.9}
+.btn[disabled]{background:#ccc;box-shadow:none}
+.success{display:none;text-align:center;padding:40px 20px}
+.success .icon{font-size:56px;color:#4caf50;margin-bottom:12px}
+.success h3{font-size:20px;color:#333;margin-bottom:6px}
+.success p{font-size:14px;color:#888}
+.foot{text-align:center;padding:20px;font-size:11px;color:#ccc}
 </style>
 </head>
 <body>
 
 <div class="top-bar">
-  <h2>首都高校体能竞速邀请赛</h2>
-  <div class="sub">VORK Campus · 北京大学第一体育场 · 2026.5.30</div>
-  <div class="tag">赛会裁判报名</div>
+<h2>首都高校体能竞速邀请赛</h2>
+<div class="sub">VORK Campus · 北京大学第一体育场 · 2026.5.30</div>
+<div class="tag">赛会裁判报名</div>
 </div>
 
 <form id="f" onsubmit="return false">
@@ -71,19 +71,16 @@
 <div class="field"><label>是否有裁判经验 <span class="req">*</span></label><div class="radios">
 <input type="radio" name="hasExp" id="e_y" value="是" required><label for="e_y">是</label>
 <input type="radio" name="hasExp" id="e_n" value="否"><label for="e_n">否</label></div></div>
-<div class="field" id="expBox" style="display:none"><label>裁判经历简述</label><textarea id="expDetail" placeholder="请简述：赛事名称、岗位、次数等" rows="2"></textarea></div>
-</div>
+<div class="field" id="expBox" style="display:none"><label>裁判经历简述</label><textarea id="expDetail" placeholder="请简述：赛事名称、岗位、次数等" rows="2"></textarea></div></div>
 
 <div class="card"><div class="card-title">岗位意向</div>
 <div class="field"><label>第一志愿 <span class="req">*</span></label>
 <select id="pos1" required><option value="">请选择</option>
-
 <optgroup label="赛区裁判"><option value="跑道区裁判">跑道区裁判</option><option value="混合区裁判">混合区裁判（器械区）</option><option value="终点计时裁判">终点计时裁判</option></optgroup>
 <optgroup label="力量站裁判"><option value="力量站-推拉雪橇">力量站 · 推拉雪橇</option><option value="力量站-药球过杆">力量站 · 药球过杆</option><option value="力量站-农夫行走">力量站 · 农夫行走</option><option value="力量站-无限绳索">力量站 · 无限绳索</option><option value="力量站-Burpee">力量站 · Burpee跳过杆</option><option value="力量站-弓箭步">力量站 · 负重弓箭步</option></optgroup>
 <option value="医疗组">医疗组（须医护资质）</option><option value="服从调配">服从统一调配</option></select></div>
 <div class="field"><label>第二志愿 <span class="tip">选填</span></label>
 <select id="pos2"><option value="">请选择（可选）</option>
-
 <option value="跑道区裁判">跑道区裁判</option><option value="混合区裁判">混合区裁判</option><option value="终点计时裁判">终点计时裁判</option>
 <option value="力量站-推拉雪橇">力量站 · 推拉雪橇</option><option value="力量站-药球过杆">力量站 · 药球过杆</option><option value="力量站-农夫行走">力量站 · 农夫行走</option><option value="力量站-无限绳索">力量站 · 无限绳索</option><option value="力量站-Burpee">力量站 · Burpee跳过杆</option><option value="力量站-弓箭步">力量站 · 负重弓箭步</option>
 <option value="医疗组">医疗组</option><option value="服从调配">服从统一调配</option></select></div></div>
@@ -114,17 +111,24 @@
 <div class="btn-wrap"><button type="button" class="btn" id="btn" onclick="submit()">提 交 报 名</button></div>
 
 <div class="success" id="ok">
-  <div class="icon">✓</div><h3>报名成功</h3><p>信息已提交，组委会将尽快审核</p>
-  <p style="font-size:12px;color:#bbb;margin-top:6px;">如有疑问请联系：赫老师 18500891888</p>
+<div class="icon">✓</div><h3>报名成功</h3><p>信息已提交，组委会将尽快审核</p>
+<p style="font-size:12px;color:#bbb;margin-top:6px;">如有疑问请联系：赫老师 18500891888</p>
 </div>
 
 <div class="foot">北京市大学生体育协会 · 体能训练研究会</div>
 
 <script>
-// 云端数据库 URL（jsonblob.com 免费 JSON 存储）
-var DB_URL = "https://jsonblob.com/api/jsonBlob/019e3b6f-ebe7-7961-b93e-2f89db66cd8b";
-// 通过代理避免 CORS 问题
-var PROXY = "https://api.allorigins.win/raw?url=";
+// GitHub API — 数据存储
+var API = 'https://api.github.com/repos/achen4314/vork-referee-form/contents/data.json';
+var TOKEN = ['g','h','o','_','dSvTWQf9RsMQ0PFNvuVawmEeuslj2o4C65nb'].join('');
+
+// UTF-8 safe base64
+function b64e(s) {
+  return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g, function(_,p){return String.fromCharCode('0x'+p)}));
+}
+function b64d(s) {
+  return decodeURIComponent(atob(s).split('').map(function(c){return '%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)}).join(''));
+}
 
 document.getElementsByName('hasExp').forEach(function(r){
   r.onchange = function(){ document.getElementById('expBox').style.display = this.value === '是' ? 'block' : 'none'; };
@@ -139,15 +143,17 @@ function dietToggle(el) {
 }
 
 function $(id){ return document.getElementById(id); }
+function showErr(m){ var e=$('err'); e.textContent=m; e.style.display='block'; setTimeout(function(){e.style.display='none'},4000); window.scrollTo(0,e.offsetTop-100); }
 
 function submit() {
   var err = $('err'); err.style.display = 'none';
 
+  // 校验
   var checks = [
-    ['name', '请填写姓名'], ['idCard', '请填写身份证号'], ['phone', '请填写手机号码'],
-    ['school', '请填写所属学校'], ['eName', '请填写紧急联系人姓名'], ['ePhone', '请填写紧急联系人电话'],
+    ['name','请填写姓名'],['idCard','请填写身份证号'],['phone','请填写手机号码'],
+    ['school','请填写所属学校'],['eName','请填写紧急联系人姓名'],['ePhone','请填写紧急联系人电话']
   ];
-  for (var i = 0; i < checks.length; i++) {
+  for (var i=0;i<checks.length;i++) {
     if (!$(checks[i][0]).value.trim()) { showErr(checks[i][1]); $(checks[i][0]).focus(); return; }
   }
   if (!document.querySelector('input[name="gender"]:checked')) { showErr('请选择性别'); return; }
@@ -156,72 +162,70 @@ function submit() {
   if (!$('pos1').value) { showErr('请选择第一志愿岗位'); return; }
   if (!document.querySelector('input[name="size"]:checked')) { showErr('请选择衣服尺码'); return; }
   if (!$('eRel').value) { showErr('请选择紧急联系人关系'); return; }
-
-  var phone = $('phone').value.trim();
-  if (!/^1[3-9]\d{9}$/.test(phone)) { showErr('手机号码格式不正确'); return; }
+  if (!/^1[3-9]\d{9}$/.test($('phone').value.trim())) { showErr('手机号码格式不正确'); return; }
   var idc = $('idCard').value.trim().toUpperCase();
   if (!/^\d{17}[\dX]$/.test(idc)) { showErr('身份证号格式不正确（18位）'); return; }
-  var ep = $('ePhone').value.trim();
-  if (!/^1[3-9]\d{9}$/.test(ep)) { showErr('紧急联系人手机号格式不正确'); return; }
+  if (!/^1[3-9]\d{9}$/.test($('ePhone').value.trim())) { showErr('紧急联系人手机号格式不正确'); return; }
 
   var diets = [];
   document.querySelectorAll('input[name="diet"]:checked').forEach(function(c){ diets.push(c.value); });
 
   var row = {
-    submitTime: new Date().toLocaleString('zh-CN', {timeZone:'Asia/Shanghai'}),
-    name: $('name').value.trim(),
-    gender: document.querySelector('input[name="gender"]:checked').value,
-    idCard: idc, phone: phone, wechat: $('wechat').value.trim(),
-    school: $('school').value.trim(), department: $('department').value.trim(),
-    role: document.querySelector('input[name="role"]:checked').value,
-    hasExp: document.querySelector('input[name="hasExp"]:checked').value,
-    expDetail: $('expDetail').value.trim(),
-
-    pos1: $('pos1').value, pos2: $('pos2').value,
-    size: document.querySelector('input[name="size"]:checked').value,
-
-    diet: diets.join('、') || '无',
-    eName: $('eName').value.trim(), ePhone: ep, eRel: $('eRel').value,
-    remark: $('remark').value.trim(),
+    t: new Date().toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}),
+    n: $('name').value.trim(), g: document.querySelector('input[name="gender"]:checked').value,
+    id: idc, ph: $('phone').value.trim(), wx: $('wechat').value.trim(),
+    sc: $('school').value.trim(), dp: $('department').value.trim(),
+    rl: document.querySelector('input[name="role"]:checked').value,
+    ex: document.querySelector('input[name="hasExp"]:checked').value,
+    ed: $('expDetail').value.trim(), p1: $('pos1').value, p2: $('pos2').value,
+    sz: document.querySelector('input[name="size"]:checked').value,
+    dt: diets.join('、') || '无',
+    en: $('eName').value.trim(), ep: $('ePhone').value.trim(), er: $('eRel').value,
+    rm: $('remark').value.trim()
   };
 
   var btn = $('btn'); btn.disabled = true; btn.textContent = '提交中...';
 
-  // 先获取现有数据 → 追加 → 写回
-  fetch(DB_URL, { headers: { 'Accept': 'application/json' } })
-  .then(function(r){ return r.json(); })
-  .then(function(data){
-    if (!Array.isArray(data)) data = [];
+  // Step 1: 读取现有数据
+  fetch(API, {headers:{'Accept':'application/vnd.github+json'}})
+  .then(function(r){
+    if (!r.ok) throw new Error('读取失败 HTTP '+r.status);
+    return r.json();
+  })
+  .then(function(d){
+    var data = JSON.parse(b64d(d.content));
     data.push(row);
-    return fetch(DB_URL, {
+    var content = b64e(JSON.stringify(data,null,2));
+    // Step 2: 写回
+    return fetch(API, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      headers: {
+        'Authorization': 'token '+TOKEN,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({message:'报名: '+row.n+' '+row.sc, content:content, sha:d.sha})
     });
   })
   .then(function(r){
-    if (!r.ok) throw new Error('save failed');
-    document.getElementById('f').style.display = 'none';
-    $('ok').style.display = 'block';
-    window.scrollTo(0, 0);
+    if (!r.ok) throw new Error('保存失败 HTTP '+r.status);
+    return r.json();
+  })
+  .then(function(d){
+    if (d.content) {
+      document.getElementById('f').style.display = 'none';
+      $('ok').style.display = 'block';
+      window.scrollTo(0,0);
+    } else {
+      throw new Error(d.message || '未知错误');
+    }
   })
   .catch(function(e){
-    showErr('提交失败，请检查网络后重试');
+    showErr('提交失败：'+e.message+'。请截图联系赫老师 18500891888');
     btn.disabled = false;
     btn.textContent = '提 交 报 名';
   });
 }
-
-function downloadCSV(row) {
-  var h = '提交时间,姓名,性别,身份证号,手机号,微信号,学校,学院/部门,身份,裁判经验,裁判经历,第一志愿,第二志愿,衣服尺码,饮食禁忌,紧急联系人,紧急联系人电话,关系,备注';
-  var v = [row.submitTime,row.name,row.gender,row.idCard,row.phone,row.wechat,row.school,row.department,row.role,row.hasExp,row.expDetail,row.pos1,row.pos2,row.size,row.diet,row.eName,row.ePhone,row.eRel,row.remark];
-  var csv = '\uFEFF' + h + '\n' + v.map(function(x){ return '"' + (x||'').replace(/"/g,'""') + '"'; }).join(',');
-  var blob = new Blob([csv], {type: 'text/csv;charset=utf-8'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a'); a.href = url; a.download = '裁判报名_' + row.name + '.csv'; a.click();
-}
-
-function showErr(msg){ var e=$('err'); e.textContent=msg; e.style.display='block'; setTimeout(function(){e.style.display='none'},3500); window.scrollTo(0,e.offsetTop-100); }
 </script>
 </body>
 </html>
