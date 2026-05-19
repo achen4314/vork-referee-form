@@ -71,7 +71,10 @@ textarea{resize:vertical;min-height:60px}
 <div class="field"><label>是否有裁判经验 <span class="req">*</span></label><div class="radios">
 <input type="radio" name="hasExp" id="e_y" value="是" required><label for="e_y">是</label>
 <input type="radio" name="hasExp" id="e_n" value="否"><label for="e_n">否</label></div></div>
-<div class="field" id="expBox" style="display:none"><label>裁判经历简述</label><textarea id="expDetail" placeholder="请简述：赛事名称、岗位、次数等" rows="2"></textarea></div></div>
+<div class="field" id="expBox" style="display:none"><label>裁判经历简述</label><textarea id="expDetail" placeholder="请简述：赛事名称、岗位、次数等" rows="2"></textarea></div>
+<div class="field"><label>是否愿意参加赛前培训 <span class="req">*</span></label><div class="radios">
+<input type="radio" name="train" id="t_y" value="愿意" required><label for="t_y">愿意</label>
+<input type="radio" name="train" id="t_n" value="不愿意"><label for="t_n">不愿意</label></div></div></div>
 
 <div class="card"><div class="card-title">岗位意向</div>
 <div class="field"><label>第一志愿 <span class="req">*</span></label>
@@ -159,6 +162,7 @@ function submit() {
   if (!document.querySelector('input[name="gender"]:checked')) { showErr('请选择性别'); return; }
   if (!document.querySelector('input[name="role"]:checked')) { showErr('请选择身份'); return; }
   if (!document.querySelector('input[name="hasExp"]:checked')) { showErr('请选择是否有裁判经验'); return; }
+  if (!document.querySelector('input[name="train"]:checked')) { showErr('请选择是否愿意参加培训'); return; }
   if (!$('pos1').value) { showErr('请选择第一志愿岗位'); return; }
   if (!document.querySelector('input[name="size"]:checked')) { showErr('请选择衣服尺码'); return; }
   if (!$('eRel').value) { showErr('请选择紧急联系人关系'); return; }
@@ -177,7 +181,7 @@ function submit() {
     sc: $('school').value.trim(), dp: $('department').value.trim(),
     rl: document.querySelector('input[name="role"]:checked').value,
     ex: document.querySelector('input[name="hasExp"]:checked').value,
-    ed: $('expDetail').value.trim(), p1: $('pos1').value, p2: $('pos2').value,
+    ed: $('expDetail').value.trim(), tr: document.querySelector('input[name="train"]:checked').value, p1: $('pos1').value, p2: $('pos2').value,
     sz: document.querySelector('input[name="size"]:checked').value,
     dt: diets.join('、') || '无',
     en: $('eName').value.trim(), ep: $('ePhone').value.trim(), er: $('eRel').value,
